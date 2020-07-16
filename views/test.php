@@ -1,0 +1,1 @@
+This is the test page called <?php echo $page ?>

@@ -1,0 +1,7 @@
+RewriteEngine on
+# Include in the next line all folders to exclude
+RewriteCond %{REQUEST_URI}  !(resources|views|uploads) [NC]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . index.php [L,QSA]
