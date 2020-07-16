@@ -1,7 +1,14 @@
 RewriteEngine on
 # Include in the next line all folders to exclude
-RewriteCond %{REQUEST_URI}  !(resources|views|uploads) [NC]
+RewriteRule ^resources($|/) - [L]
+RewriteRule ^views($|/) - [L]
+RewriteRule ^uploads($|/) - [L]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . index.php [L,QSA]
+
+# Reroute the assets, css, js folder
+RewriteRule assets/(.*)$ /views/assets/$1 [L,NC]
+RewriteRule css/(.*)$ /views/css/$1 [L,NC]
+RewriteRule js/(.*)$ /views/js/$1 [L,NC]
