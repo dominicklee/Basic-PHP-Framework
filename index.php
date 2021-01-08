@@ -4,6 +4,20 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+//Force HTTPS
+if(empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "off"){
+$redirect = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+header('HTTP/1.1 301 Moved Permanently');
+header('Location: ' . $redirect);
+exit();
+}
+
+//Start sesssion
+session_start();
+
+//Utilities
+include('resources/utils.php');
+
 //Require the Router and Templating Engine
 require_once 'Xesau/Router.php';
 require_once 'SimpleTemplateEngine/loader.php';
@@ -15,13 +29,23 @@ $env = new SimpleTemplateEngine\Environment('views', '.php');	//views folder and
 //Router code starts here
 
 $router = new Router(function ($method, $path, $statusCode, $exception) {
-    http_response_code($statusCode);
-    include 'views/error.html';
+	global $env;	//bring in the global template engine
+    echo $env->render('404');
 }); 
 
 $router->get('/', function() {
-    // Home page
-    include 'views/home.html';
+	global $env;	//bring in the global template engine
+	echo $env->render('apps');
+});
+
+$router->get('/apps', function() {
+	global $env;	//bring in the global template engine
+	echo $env->render('apps');
+});
+
+$router->get('/editor', function() {
+	global $env;	//bring in the global template engine
+	echo $env->render('apps');
 });
 
 $router->get('/page/(.*)', function($page) {
